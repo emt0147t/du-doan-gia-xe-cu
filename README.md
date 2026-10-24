@@ -13,16 +13,16 @@ Used Car Price Prediction in Vietnam giải quyết bài toán định lượng 
 Repository được tinh gọn tối đa để người chấm dễ dàng theo dõi toàn bộ logic trong một notebook duy nhất và đối chiếu số liệu kiểm toán:
 
 ```text
-├── README.md                                # Hướng dẫn tổng quan, cài đặt và tóm tắt kết quả
-├── requirements.txt                         # Danh sách thư viện Python cần thiết
+├── README.md                                
+├── requirements.txt                        
 ├── notebooks/
-│   └── used_car_price_prediction.ipynb     # Notebook trung tâm 13 phần độc lập, tự chứa toàn bộ mã nguồn
+│   └── used_car_price_prediction.ipynb     
 ├── data/
-│   ├── DATA_README.md                       # Hướng dẫn nguồn gốc dữ liệu, bản quyền & cách đặt data local
-│   └── dataset_manifest.json                # Bảng kê khai mã băm SHA-256 các tập dữ liệu thực tế
+│   ├── DATA_README.md                       
+│   └── dataset_manifest.json              
 ├── reports/
-│   └── model_comparison.csv                 # Bảng so sánh kết quả 21 thực nghiệm (Phase 6 & Phase 6.2)
-└── .gitignore                               # Quy tắc loại trừ an toàn (loại bỏ dữ liệu PII và artifact tạm)
+│   └── model_comparison.csv                
+└── .gitignore                              
 ```
 
 
