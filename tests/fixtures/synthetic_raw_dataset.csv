@@ -1,0 +1,8 @@
+listing_id,title,price_raw,brand_raw,model_raw,year_raw,mileage_raw,transmission_raw,fuel_raw,location_raw,origin_raw,body_raw,seats_raw
+ID_001,Toyota Vios 1.5E 2021,435 triệu,Toyota,Vios,2021,45000 km,Số tự động,Máy xăng,Hà Nội,Trong nước,Sedan,5
+ID_002,Kia Carnival Signature 2022,1 tỷ 250 triệu,Kia,Carnival,2022,30.000 km,Số tự động,Máy dầu,Tp.HCM,Trong nước,MPV,7
+ID_003,Ford Ranger Wildtrak 2020,680 triệu đồng,Ford,Ranger,2020,70000 km,Số tự động,Máy dầu,Đà Nẵng,Nhập khẩu,Bán tải,5
+ID_004,Mercedes-Benz C200 Exclusive 2019,920 triệu,Mercedes-Benz,C200,2019,55.000,Số tự động,Máy xăng,Hà Nội,Trong nước,Sedan,
+ID_005,Honda City TOP 2018,Liên hệ,Honda,City,2018,80000 km,Số tự động,Máy xăng,Bình Dương,Trong nước,Sedan,5
+ID_006,Mazda 3 Luxury 2023,650 triệu,Mazda,3,2023,12000 km,Số tự động,Máy xăng,Hải Phòng,Trong nước,Sedan,5
+ID_007,Hyundai Accent 1.4MT 2017,310 triệu,Hyundai,Accent,2017,,Số sàn,Máy xăng,Cần Thơ,Trong nước,Sedan,5

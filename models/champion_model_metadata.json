@@ -1,0 +1,47 @@
+{
+  "model_name": "Champion Random Forest Regressor (Tuned Log-Target)",
+  "pipeline_structure": {
+    "preprocessor": "ColumnTransformer (SimpleImputer + OneHotEncoder for Categorical; SimpleImputer for Numeric)",
+    "estimator": "RandomForestRegressor(n_estimators=150, max_depth=24, min_samples_leaf=1, random_state=42, n_jobs=-1)"
+  },
+  "target_transformation": {
+    "training_target": "log_price = ln(price_vnd)",
+    "inference_inverse": "price_vnd = exp(pred_log), bounded [30M, 100B]"
+  },
+  "training_data": {
+    "source": "data/processed/splits/train.csv",
+    "samples": 18808,
+    "features_in": [
+      "year",
+      "car_age",
+      "mileage_km",
+      "is_zero_mileage",
+      "engine_displacement_l",
+      "seats",
+      "doors",
+      "is_luxury_brand",
+      "brand",
+      "model",
+      "condition",
+      "transmission",
+      "origin",
+      "body_type",
+      "fuel_type"
+    ],
+    "total_features": 15
+  },
+  "evaluation_summary": {
+    "validation_mae_vnd": 142934537.0,
+    "validation_r2": 0.8694,
+    "validation_mdape_pct": 4.25,
+    "final_test_mae_vnd": 111793581.0,
+    "final_test_r2": 0.9448,
+    "final_test_mdape_pct": 4.29
+  },
+  "artifact_details": {
+    "file_path": "models\\champion_random_forest.joblib",
+    "file_size_bytes": 30984932,
+    "sha256": "dfd78cfd3e4e369eca254550bf0675c72002fdec7df5e4e67804c4ad81a83191",
+    "serialized_with": "joblib 1.6.0"
+  }
+}

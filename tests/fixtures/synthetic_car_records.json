@@ -1,0 +1,127 @@
+{
+  "_metadata": {
+    "description": "Tập dữ liệu fixture tổng hợp các bản ghi xe ô tô dùng để kiểm thử độc lập module validation dữ liệu (Offline Contract Testing).",
+    "is_synthetic": true,
+    "is_real_scraped_data": false,
+    "created_at": "2026-10-18T15:30:00+07:00"
+  },
+  "records": [
+    {
+      "case_id": "valid_complete_sedan",
+      "data": {
+        "listing_id": "syn_001",
+        "price_vnd": 899000000,
+        "brand": "Mercedes-Benz",
+        "model": "C200",
+        "year": 2021,
+        "mileage_km": 49000.0,
+        "fuel_type": "Máy xăng",
+        "transmission": "Số tự động",
+        "location_province": "Hà Nội",
+        "body_type": "Sedan",
+        "origin": "Nhập khẩu",
+        "seats": 5
+      },
+      "expected_valid": true,
+      "expected_reasons": []
+    },
+    {
+      "case_id": "valid_minimal_optional_missing",
+      "data": {
+        "listing_id": "syn_002",
+        "price_vnd": 450000000,
+        "brand": "Toyota",
+        "model": "Vios",
+        "year": 2018,
+        "mileage_km": null,
+        "fuel_type": null,
+        "transmission": null,
+        "location_province": "Hà Nội",
+        "body_type": null,
+        "origin": null,
+        "seats": null
+      },
+      "expected_valid": true,
+      "expected_reasons": []
+    },
+    {
+      "case_id": "invalid_missing_target_price",
+      "data": {
+        "listing_id": "syn_003",
+        "price_vnd": null,
+        "brand": "Kia",
+        "model": "Carnival",
+        "year": 2022,
+        "mileage_km": 30000.0
+      },
+      "expected_valid": false,
+      "expected_reasons": ["MISSING_TARGET_PRICE"]
+    },
+    {
+      "case_id": "invalid_target_below_minimum",
+      "data": {
+        "listing_id": "syn_004",
+        "price_vnd": 5000000,
+        "brand": "Hyundai",
+        "model": "Accent",
+        "year": 2020,
+        "mileage_km": 50000.0
+      },
+      "expected_valid": false,
+      "expected_reasons": ["TARGET_OUT_OF_BOUNDS"]
+    },
+    {
+      "case_id": "invalid_year_too_old",
+      "data": {
+        "listing_id": "syn_005",
+        "price_vnd": 300000000,
+        "brand": "Toyota",
+        "model": "Camry",
+        "year": 2005,
+        "mileage_km": 200000.0
+      },
+      "expected_valid": false,
+      "expected_reasons": ["YEAR_OUT_OF_BOUNDS"]
+    },
+    {
+      "case_id": "invalid_negative_mileage",
+      "data": {
+        "listing_id": "syn_006",
+        "price_vnd": 500000000,
+        "brand": "Honda",
+        "model": "City",
+        "year": 2019,
+        "mileage_km": -15000.0
+      },
+      "expected_valid": false,
+      "expected_reasons": ["NEGATIVE_MILEAGE"]
+    },
+    {
+      "case_id": "invalid_missing_identifier",
+      "data": {
+        "listing_id": "",
+        "price_vnd": 600000000,
+        "brand": "Mazda",
+        "model": "3",
+        "year": 2020,
+        "mileage_km": 40000.0
+      },
+      "expected_valid": false,
+      "expected_reasons": ["MISSING_LISTING_ID"]
+    },
+    {
+      "case_id": "invalid_unrecognized_category",
+      "data": {
+        "listing_id": "syn_007",
+        "price_vnd": 700000000,
+        "brand": "Ford",
+        "model": "Ranger",
+        "year": 2021,
+        "mileage_km": 60000.0,
+        "transmission": "Vô cấp CVT không xác định"
+      },
+      "expected_valid": false,
+      "expected_reasons": ["INVALID_TRANSMISSION_CATEGORY"]
+    }
+  ]
+}

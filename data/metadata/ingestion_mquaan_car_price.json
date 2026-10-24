@@ -1,0 +1,45 @@
+{
+  "ingestion_metadata": {
+    "source_id": "mquaan_car_price",
+    "source_name": "Car_price_analysis (Vietnam Used Car Price Dataset)",
+    "source_repository": "https://github.com/mquaan/Car_price_analysis",
+    "referenced_upstream_dataset": "https://www.kaggle.com/datasets/nguynthanhlun/vietnamese-car-price",
+    "upstream_publisher": "Nguyen Thanh Lun (Kaggle)",
+    "repository_owner": "mquaan (GitHub)",
+    "project_academic_context": "Tableau Data Visualization Project - Faculty of Information Technology, VNUHCM-US",
+    "retrieval_timestamp": "2026-10-19T02:02:50Z",
+    "decision_gate_status": "TECHNICALLY_AVAILABLE_LICENSE_PENDING",
+    "license_declared_in_readme": "Apache 2.0",
+    "license_repo_detected": "None (No formal LICENSE file present in repository)",
+    "underlying_data_provenance": "Scraped from commercial listing portal bonbanh.com (verified by listing URLs, salon subdomains, and descriptions)",
+    "pii_assessment": {
+      "seller_contacts": "seller.csv contains phone numbers and personal salon addresses; NOT staged to prevent PII exposure.",
+      "raw_descriptions": "car_detail.csv contains dealer descriptions with occasional contact numbers.",
+      "processed_table": "car_sell_processed.csv is sanitized of personal phone numbers and direct contact details."
+    },
+    "staged_files": [
+      {
+        "filename": "car_sell_processed.csv",
+        "relative_path": "data/raw/external/mquaan_car_price/car_sell_processed.csv",
+        "size_bytes": 6452999,
+        "sha256": "1d0c0d2f5a920f19eee09cffc84f30c7bc7496ac5bcb35260ccfbbd93c89437c",
+        "row_count": 30652,
+        "column_count": 21
+      },
+      {
+        "filename": "car_detail.csv",
+        "relative_path": "data/raw/external/mquaan_car_price/car_detail.csv",
+        "size_bytes": 21355297,
+        "sha256": "44c13afc5982f7abc51611fc56eeefd02df8e47f3224112f51b76514a7328f08",
+        "row_count": 30652,
+        "column_count": 21
+      },
+      {
+        "filename": "Data_source.txt",
+        "relative_path": "data/raw/external/mquaan_car_price/Data_source.txt",
+        "size_bytes": 218,
+        "sha256": "91b56f1d5235a4ae3cddb2315a8e939fff24f94f"
+      }
+    ]
+  }
+}

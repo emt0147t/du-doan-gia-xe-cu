@@ -1,174 +1,148 @@
-# Kế Hoạch Thử Nghiệm Thu Thập Dữ Liệu Nhỏ (Data Pilot Plan)
+# Kế Hoạch Thử Nghiệm Thu Thập & Chuẩn Bị Dữ Liệu (Data Pilot & Ingestion Specification)
 
-- **Quy mô dự kiến**: 30 – 50 tin đăng rao bán xe ô tô đã qua sử dụng
-- **Nguồn khảo sát**: Oto.com.vn
-- **Giai đoạn**: Phase 1 — Small-scale Data Pilot (Chỉ thực hiện sau khi có sự đồng thuận từ Mentor)
-- **Tài liệu tham chiếu**: [Data Source Audit](file:///d:/ai-club-end-training/docs/data_source_audit.md), [Data Dictionary](file:///d:/ai-club-end-training/docs/data_dictionary.md)
-
----
-
-## 1. Phương Pháp Lấy Mẫu Tránh Lệch Phân Khúc (Stratified / Multi-page Sampling)
-
-### 1.1. Vấn đề lệch mẫu trên sàn rao vặt
-Nếu crawler chỉ lấy 2–3 trang đầu tiên của mục "Mua bán xe cũ", dữ liệu sẽ bị lệch nghiêm trọng:
-- Toàn bộ là xe "VIP" (các gói quảng cáo V5, V3) thường do các salon xe cũ lớn đăng bán.
-- Thiên vị mạnh về các phân khúc xe sang hoặc xe phổ thông bán chạy tại 2 đô thị lớn (Hà Nội, TP.HCM).
-- Thiếu vắng các dòng xe từ người bán cá nhân hoặc các tỉnh thành khác.
-
-### 1.2. Chiến lược lấy mẫu đề xuất cho Pilot (30 – 50 bản ghi)
-Lấy mẫu trải đều qua 3 lát cắt chính:
-1. **Lấy mẫu theo phân trang có bước nhảy (Jump-paging)**:
-   - Thay vì lấy liên tiếp trang 1, 2, 3, crawler sẽ lấy 10–15 tin từ Trang 1, 10–15 tin từ Trang 5, 10–15 tin từ Trang 15, và 10 tin từ Trang 25.
-2. **Lấy mẫu theo danh mục thương hiệu đa dạng**:
-   - Nhóm xe phổ thông Nhật - Hàn (Toyota, Hyundai, Kia, Mazda, Honda): chiếm ~50% mẫu.
-   - Nhóm xe phổ thông Mỹ/châu Âu (Ford): chiếm ~20% mẫu.
-   - Nhóm xe cao cấp / hạng sang (Mercedes-Benz, BMW, Lexus, Audi): chiếm ~20% mẫu.
-   - Nhóm xe điện / thương hiệu Việt (VinFast): chiếm ~10% mẫu.
-3. **Phân bổ địa lý**: Không tập trung 100% tại Hà Nội; phân bổ tối thiểu 30% tại miền Nam (TP.HCM, Đồng Nai, Bình Dương) và các tỉnh thành khác.
+- **Dự án**: Dự đoán giá rao bán ô tô đã qua sử dụng tại Việt Nam (Used Car Price Prediction in Vietnam)
+- **Phiên bản kế hoạch**: 3.1 (Hiệu chỉnh điều kiện kích hoạt độc lập và chuẩn hóa chất lượng dữ liệu tại Phase 2.1)
+- **Trạng thái thực thi hiện tại**: **Giai đoạn 1 Ngoại tuyến (ĐÃ HOÀN TẤT) / Dự án đang chờ quyết định định hướng từ Mentor trước khi kích hoạt Giai đoạn 2**
+- **Tài liệu liên quan**: [Data Source Audit](file:///d:/ai-club-end-training/docs/data_source_audit.md), [Data Dictionary](file:///d:/ai-club-end-training/docs/data_dictionary.md), [Permission Request Draft](file:///d:/ai-club-end-training/docs/permission_request_draft.md), [Mentor Decision Brief](file:///d:/ai-club-end-training/docs/mentor_data_source_decision.md)
 
 ---
 
-## 2. Quy Trình Kiểm Tra Các Trường Dữ Liệu (Field Inspection Pipeline)
+## 1. Tổng Quan Kiến Trúc Kế Hoạch Hai Giai Đoạn
 
-Quy trình kiểm tra trên từng bản ghi thô được thực hiện tuần tự qua các bước:
+Kế hoạch chuẩn bị dữ liệu tuân thủ nghiêm ngặt tính an toàn kỹ thuật và đạo đức nghiên cứu, bao gồm hai giai đoạn:
 
 ```text
-[Raw HTML Card] 
-       │
-       ▼
-[Extraction Check] ──► Kiểm tra xem thẻ HTML/thuộc tính metadata có tồn tại?
-       │
-       ▼
-[Type & Pattern Check] ──► Kiểm tra regex số km, năm sản xuất, đơn vị giá
-       │
-       ▼
-[Normalization Check] ──► Thử nghiệm hàm parse giá sang VND, làm sạch text
-       │
-       ▼
-[PII Scrubbing Check] ──► Xác minh không có số điện thoại / tên người bán lọt vào
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  STAGE 1: OFFLINE READINESS (Sẵn Sàng Ngoại Tuyến)                          │
+│  - Xây dựng Price Parser & 17 Unit Tests (src/data/price_parser.py)         │
+│  - Định nghĩa Data Validation Contract & 19 Unit Tests (src/data/valid...)  │
+│  - Xây dựng Fixtures tổng hợp kiểm thử độc lập (tests/fixtures/)            │
+│  - Phát hiện và khắc phục 3 lỗi logic nghiệp vụ tiềm ẩn                     │
+│  ==> ĐÃ HOÀN THÀNH 100% VỚI 36/36 TESTS PASSED (100% OFFLINE)               │
+│  *Lưu ý: 36 unit tests kiểm tra logic code; chất lượng dữ liệu thật là      │
+│   NOT MEASURED vì chưa có dữ liệu thật được phép sử dụng.                   │
+└──────────────────────────────────────┬──────────────────────────────────────┘
+                                       │
+                Chờ 5 quyết định định hướng chính thức từ Mentor
+                                       │
+         ┌─────────────────────────────┴─────────────────────────────┐
+         ▼                                                           ▼
+┌──────────────────────────────────┐        ┌──────────────────────────────────┐
+│ BRANCH A: AUTHORIZED COLLECTION  │        │ BRANCH B: APPROVED PUBLIC DATASET│
+│ (Thu thập Web có cấp phép)       │        │ (Khai thác Dataset Mở Được Duyệt)│
+│ - 4 điều kiện kích hoạt độc lập  │        │ - Mentor chấp thuận thay thế crawl│
+│ - Mẫu pilot quy mô 30-50 tin     │        │ - Kiểm tra SHA-256 checksum      │
+│ - Khử PII tuyệt đối              │        │ - Đối chiếu schema & audit missing│
+│ - Đánh giá Parser & Validation   │        │ - Độc lập kiểm định chất lượng   │
+└──────────────────────────────────┘        └──────────────────────────────────┘
 ```
 
 ---
 
-## 3. Cơ Chế Phát Hiện Bản Ghi Thiếu, Trùng Lặp & Sai Định Dạng
+## 2. Giai Đoạn 1: Sẵn Sàng Ngoại Tuyến (Stage 1 — Offline Readiness [ĐÃ HOÀN TẤT])
 
-### 3.1. Phát hiện trùng lặp (Deduplication)
-- **Cấp độ 1 (Technical Duplicate)**: So sánh trường `listing_id` (trích xuất từ `data-autoid`). Nếu xuất hiện 2 bản ghi có cùng `listing_id`, loại bỏ ngay lập tức ở tầng thu thập.
-- **Cấp độ 2 (Semantic / Physical Duplicate)**: Tìm kiếm các bản ghi có sự trùng khớp toàn bộ: `brand`, `model`, `year`, `mileage_km`, `transmission`, `fuel_type`, `location_province` và độ chênh lệch giá < 2%. Đây là dấu hiệu cùng một chiếc xe được đăng nhiều lần bởi các tài khoản khác nhau.
-
-### 3.2. Phát hiện dữ liệu thiếu (Missingness Check)
-- Đếm số lượng giá trị `NULL`, rỗng (`""`), hoặc `NA` trên từng cột.
-- Phân biệt 2 cấp độ:
-  - **Trường cốt lõi bắt buộc (Mandatory)**: `price_vnd`, `brand`, `model`, `year`. Nếu thiếu -> Bản ghi không thể dùng cho hồi quy có giám sát.
-  - **Trường bổ trợ (Auxiliary / Optional)**: `mileage_km`, `body_type`, `transmission`, `origin`, `fuel_type`.
-  - **Trường provisional**: `seats`.
-
-### 3.3. Phát hiện sai định dạng (Format & Schema Validation)
-- Regex kiểm tra định dạng năm: `^(19|20)\d{2}$`.
-- Regex kiểm tra số km: định dạng chuỗi số có dấu chấm và đơn vị km (vd: `^\d{1,3}(\.\d{3})*\s*km$`).
-- Regex kiểm tra giá: chứa các từ khóa định lượng "triệu", "tỉ", "tỷ", hoặc "thỏa thuận".
+Tất cả các thành phần cốt lõi của Stage 1 đã được cài đặt và kiểm định độc lập trong workspace:
+1. **Module Parse Giá Tiếng Việt** ([src/data/price_parser.py](file:///d:/ai-club-end-training/src/data/price_parser.py)):
+   - Hỗ trợ đơn vị Triệu, Tỷ, kết hợp Tỷ-Triệu, số nguyên đầy đủ.
+   - Xử lý đúng cấu trúc dấu phân cách hàng nghìn (khắc phục BUG-01: `1.250 triệu` $\rightarrow$ `1.250.000.000 VND`).
+   - Loại trừ rõ ràng ngoại tệ (`USD`, `EUR`, `$`) và giá thỏa thuận (`None`).
+2. **Hợp Đồng Kiểm Định Dữ Liệu Cục Bộ** ([src/data/validation.py](file:///d:/ai-club-end-training/src/data/validation.py)):
+   - Khắc phục BUG-02: Không gom cụm các bản ghi thiếu `listing_id` thành trùng lặp.
+   - Khắc phục BUG-03: Xử lý an toàn `float('nan')`, `float('inf')`, `bool` và khoảng trắng.
+3. **Bộ Kiểm Thử Độc Lập** ([tests/](file:///d:/ai-club-end-training/tests/)):
+   - Đạt **36/36 tests passed** (100% Pass) trong thời gian 0.06 giây.
+   - 100% assertions thực chất, nạp fixture tổng hợp từ tệp JSON.
+   - **Xác nhận**: Unit tests chỉ xác minh tính đúng đắn của logic code xử lý dữ liệu. Toàn bộ các chỉ số chất lượng dữ liệu thực tế (tỷ lệ missing, tỷ lệ lỗi parse thực tế, tỷ lệ trùng lặp thực tế, độ phân tán của giá) hiện ở trạng thái **`NOT MEASURED`** cho tới khi có dữ liệu thật được phép tiếp cận.
 
 ---
 
-## 4. Thuật Toán Chuẩn Hóa Đơn Vị Giá (`price_vnd`) Không Sai Lệch
+## 3. Giai Đoạn 2 — Đặc Tả Phân Nhánh Triển Khai (Stage 2 Specification)
 
-### 4.1. Bản chất vấn đề
-Chuỗi giá từ website Việt Nam rất đa dạng:
-- Dạng 1 đơn vị triệu: `"899 triệu"` -> $899 \times 10^6 = 899.000.000$ VND.
-- Dạng 1 đơn vị tỷ: `"2 tỉ"` hoặc `"2 tỷ"` -> $2 \times 10^9 = 2.000.000.000$ VND.
-- Dạng hỗn hợp tỷ và triệu: `"1 tỉ 169 triệu"` -> $1 \times 10^9 + 169 \times 10^6 = 1.169.000.000$ VND.
-- Dạng số thập phân: `"1.2 tỉ"`, `"1,2 tỷ"` -> $1.2 \times 10^9 = 1.200.000.000$ VND.
-- Dạng không định lượng: `"Thỏa thuận"`, `"Giá liên hệ"`, `""` -> Không có giá trị số (Missing / Non-target).
+> [!WARNING]
+> **Quy định an toàn tuyệt đối**:
+> Hiện tại chưa có nhánh nào được kích hoạt. Không thực hiện HTTP request live, không chạy crawler và không tải dataset khi chưa có chỉ thị từ Mentor.
 
-### 4.2. Đặc tả thuật toán Parser (Được hiện thực hóa trong Python)
-```python
-import re
-from typing import Optional
+### 3.1. Nhánh A — Thu Thập Dữ Liệu Website Có Cấp Phép (Branch A — Authorized Website Collection)
 
-def parse_vietnamese_price_to_vnd(price_str: str) -> Optional[int]:
-    """
-    Chuẩn hóa chuỗi giá tiếng Việt sang số nguyên VND (đồng).
-    Trả về None nếu giá trị không hợp lệ hoặc ở dạng thỏa thuận.
-    """
-    if not price_str or not isinstance(price_str, str):
-        return None
-        
-    s = price_str.lower().strip()
-    if "thỏa thuận" in s or "liên hệ" in s or "thuong luong" in s:
-        return None
-        
-    # Chuẩn hóa từ vựng: thay 'tỉ' thành 'tỷ', dấu phẩy thập phân thành dấu chấm
-    s = s.replace("tỉ", "tỷ").replace(",", ".")
-    
-    total_vnd = 0.0
-    matched = False
-    
-    # 1. Bóc tách phần tỷ
-    ty_match = re.search(r'([\d\.]+)\s*tỷ', s)
-    if ty_match:
-        try:
-            val_ty = float(ty_match.group(1))
-            total_vnd += val_ty * 1_000_000_000
-            matched = True
-        except ValueError:
-            return None
-            
-    # 2. Bóc tách phần triệu
-    trieu_match = re.search(r'([\d\.]+)\s*triệu', s)
-    if trieu_match:
-        try:
-            val_trieu = float(trieu_match.group(1))
-            total_vnd += val_trieu * 1_000_000
-            matched = True
-        except ValueError:
-            return None
-            
-    if not matched or total_vnd <= 0:
-        return None
-        
-    return int(round(total_vnd))
-```
+#### 1. Bốn điều kiện cần độc lập trước khi bắt đầu (Pre-conditions):
+Nhánh A chỉ được kích hoạt khi thỏa mãn đồng thời cả 4 điều kiện, không điều kiện nào được thay thế cho nhau:
+1. **Chấp thuận sư phạm từ Mentor**: Mentor đồng ý rằng phương thức thu thập và quy mô thử nghiệm phù hợp với mục tiêu đào tạo của CLB.
+2. **Điều kiện sử dụng nguồn**: Điều khoản sử dụng của website cho phép trích xuất hoặc không cấm đoán.
+3. **Chấp thuận của đơn vị sở hữu dữ liệu**: Có văn bản / email chấp thuận chính thức từ Công ty Cổ phần Nextgen Việt Nam (hoặc đơn vị vận hành tương ứng). *(Sự chấp thuận của Mentor không thay thế được quyền sở hữu trí tuệ của doanh nghiệp).*
+4. **Đáp ứng tiêu chuẩn kỹ thuật an toàn & bảo vệ dữ liệu**:
+   - Khai báo User-Agent học thuật minh bạch kèm thông tin liên hệ.
+   - Áp dụng độ trễ tối thiểu `time.sleep(3.0)` giữa các request, chạy đơn luồng (single thread).
+   - Bộ lọc khử PII hoạt động trước khi lưu trữ bản ghi thô.
 
-### 4.3. Kiểm thử đơn vị (Unit Test) cho Parser
-Bộ test case tối thiểu bắt buộc:
-- `"899 triệu"` -> `899000000`
-- `"1 tỉ 169 triệu"` -> `1169000000`
-- `"2.5 tỷ"` -> `2500000000`
-- `"Giá thỏa thuận"` -> `None`
-- `""` -> `None`
+#### 2. Quy mô mẫu thử nghiệm (Pilot Sample Size):
+- **Cỡ mẫu**: Thu thập giới hạn từ **30 đến 50 bản ghi** đầu tiên bằng phương pháp lấy mẫu bước nhảy (jump-paging across categories).
+- **Mục đích**: Đo lường thực tế tỷ lệ thành công của parser giá, kiểm tra sự ổn định của selector DOM, và phát hiện các trường hợp biên trên dữ liệu sống mà không gây tải cho máy chủ nguồn.
+
+#### 3. Schema đầu ra & Phân loại trường (Output Schema):
+Mỗi bản ghi được lưu trữ dưới định dạng JSON Lines (`jsonl`) với cấu trúc:
+- **Trường bắt buộc (Mandatory - Thiếu sẽ làm bản ghi INVALID)**:
+  - `listing_id` (string): Khóa định danh kỹ thuật trích xuất từ `data-autoid`.
+  - `price_vnd` (int): Giá rao bán sau khi parse bằng `price_parser.py` (30 triệu $\le$ price $\le$ 50 tỷ VND).
+  - `brand` (string): Hãng sản xuất xe (Toyota, Mazda, Kia, Honda, Ford, Mercedes-Benz...).
+  - `model` (string): Dòng xe (Vios, CX-5, Morning, City, Ranger, C200...).
+  - `year` (int): Năm sản xuất (2010 $\le$ year $\le$ 2026).
+- **Trường tùy chọn (Optional - Thiếu sẽ ghi nhận WARNING nhưng bản ghi vẫn VALID)**:
+  - `mileage_km` (float | null): Số km đã đi (0 $\le$ mileage $\le$ 1.000.000 km).
+  - `transmission` (string | null): Hộp số (`Số tự động`, `Số sàn`).
+  - `fuel_type` (string | null): Nhiên liệu (`Máy xăng`, `Máy dầu`, `Hybrid`, `Điện`).
+  - `origin` (string | null): Xuất xứ (`Trong nước`, `Nhập khẩu`).
+  - `body_type` (string | null): Kiểu dáng (`Sedan`, `SUV`, `MPV`, `Hatchback`...).
+  - `location_province` (string | null): Tỉnh / thành phố nơi bán.
+  - `seats` (int | null): Số chỗ ngồi (trường suy diễn / dự phòng).
+- **Trường kiểm toán hệ thống (System Metadata)**:
+  - `source_url` (string): URL tin đăng để đối chứng.
+  - `crawl_date` (string): Thời điểm thu thập chuẩn ISO 8601 (`YYYY-MM-DDTHH:MM:SSZ`).
+
+#### 4. Quy tắc bảo vệ quyền riêng tư & Khử PII (PII Scrubbing Rules):
+- Tuyệt đối không đọc và không trích xuất các thuộc tính/thẻ chứa số điện thoại người bán (`data-phone`, `.seller-phone`, v.v.).
+- Tuyệt đối không trích xuất tên cá nhân người bán (`.seller-name`, `.contact-name`).
+- Tuyệt đối không lưu giữ nội dung văn bản tự do của người bán nếu chưa qua bộ lọc regex số điện thoại và email.
+
+#### 5. Điều kiện dừng pilot ngay lập tức (Pilot Stop Conditions):
+- Máy chủ nguồn trả về mã HTTP `403 Forbidden`, `429 Too Many Requests` hoặc trang chuyển hướng xác thực CAPTCHA / Cloudflare Turnstile.
+- Tỷ lệ tin "Giá thỏa thuận" vượt quá **25%** tổng mẫu pilot.
+- Tỷ lệ bóc tách giá thất bại trên các tin có giá cụ thể vượt quá **5%**.
 
 ---
 
-## 5. Thống Kê Đánh Giá Chất Lượng Mẫu Pilot (Data Quality Metrics)
+### 3.2. Nhánh B — Khai Thác Dataset Mở Được Duyệt (Branch B — Approved Public Dataset)
 
-Sau khi thu thập 30–50 bản ghi mẫu, chạy bảng thống kê tổng hợp:
-1. **Tỷ lệ hoàn chỉnh trường (Completeness Rate)** trên từng cột:
-   $$\text{Completeness}_j = \frac{\sum_{i=1}^N \mathbb{I}(x_{ij} \text{ hợp lệ})}{N} \times 100\%$$
-2. **Tỷ lệ Target hợp lệ**: Tỷ lệ tin đăng có `price_vnd` chuyển đổi thành công sang số nguyên dương.
-3. **Tỷ lệ trùng lặp (Duplicate Rate)**: Số `listing_id` trùng lặp chia cho tổng số tin quét.
-4. **Phân phối thống kê mô tả sơ bộ**:
-   - Giá (`price_vnd`): Min, Median, Mean, Max, IQR.
-   - Năm (`year`): Min, Max, phân phối các năm.
-   - ODO (`mileage_km`): Min, Median, Max.
+#### 1. Điều kiện kích hoạt:
+- Mentor phê duyệt bằng văn bản cho phép sử dụng dataset mở có sẵn (như Vietnam Automobile Dataset trên Kaggle) để thay thế hoàn toàn hoặc bổ trợ cho khâu thu thập dữ liệu.
+
+#### 2. Quy trình kiểm tra nguồn gốc & Tính toàn vẹn:
+- Lập biên bản thẩm định nguồn gốc: Ghi rõ giấy phép hiển thị trên Kaggle (MIT) và thực tế quyền phát hành dữ liệu nguồn là **`UNVERIFIED`** do nguồn gốc xuất phát từ web-scraping bên thứ 3.
+- Sử dụng dataset giới hạn trong phạm vi học tập phi thương mại tại CLB.
+- **Tạo mã băm kiểm tra (SHA-256 Checksum)** cho tệp `data.csv` ngay khi tải về để cố định phiên bản dữ liệu.
+- Viết script kiểm tra schema độc lập: Đo lường chính xác số dòng, số cột, kiểu dữ liệu thực tế (không dùng số liệu giả định).
+
+#### 3. Đo lường chất lượng dữ liệu thực tế:
+- Đưa 100% dữ liệu qua [src/data/validation.py](file:///d:/ai-club-end-training/src/data/validation.py).
+- Đo lường và báo cáo thực tế: Tỷ lệ missing từng cột, tỷ lệ outliers (giá, năm, ODO), tỷ lệ trùng lặp.
 
 ---
 
-## 6. Tiêu Chí Tiếp Tục, Điều Chỉnh Hoặc Dừng Nguồn (Đề Xuất Để Thảo Luận Với Mentor)
+## 4. Bảng Tiêu Chí Quyết Định Pilot (Pilot Go / No-Go Decision Matrix)
 
-> [!IMPORTANT]
-> Các tỷ lệ dưới đây là **ngưỡng đề xuất kỹ thuật** từ góc độ Data Science để nhóm và Mentor xem xét, không phải quy định cứng nhắc.
-
-| Quyết định | Điều kiện đề xuất xem xét | Hành động tương ứng |
+| Tiêu chí | Ngưỡng đạt yêu cầu (PROPOSED_THRESHOLD) | Hành động khi không đạt |
 | :--- | :--- | :--- |
-| **TIẾP TỤC (Proceed to Full Crawl)** | - Tỷ lệ hợp lệ của `price_vnd` > 95%<br>- Tỷ lệ đầy đủ của các biến cốt lõi (`brand`, `model`, `year`, `mileage`) > 85%<br>- Website phản hồi ổn định với rate limit 2s/req, không phát sinh CAPTCHA/WAF block | Thiết kế pipeline thu thập mở rộng (~1.000 bản ghi) theo batch an toàn. |
-| **ĐIỀU CHỈNH (Adjust Pipeline / Schema)** | - Trường `seats` bị missing > 80% (đã dự báo trước)<br>- Xuất hiện các biến thể giá mới chưa parse được (chiếm 5–15%)<br>- Phân bổ hãng xe bị lệch quá mức về 1 thương hiệu | Điều chỉnh bộ Parser Regex; chuyển `seats` thành biến phái sinh hoặc loại khỏi mô hình cơ sở; bổ sung lọc theo chuyên mục hãng xe. |
-| **DỪNG NGUỒN (Stop & Pivot to Backup Source)** | - Website áp dụng cơ chế chặn IP (HTTP 403 / 429 liên tục, Cloudflare Turnstile, CAPTCHA)<br>- Tỷ lệ tin đăng "Giá thỏa thuận" chiếm > 30% mẫu<br>- Phát hiện vi phạm bản quyền dữ liệu nghiêm ngặt từ đơn vị quản lý | Dừng thu thập ngay lập tức; chuyển sang phương án dữ liệu thay thế (Secondary Open Dataset từ Kaggle hoặc API học thuật). |
+| **Quyền truy cập & Pháp lý (Branch A)** | Thỏa mãn đồng thời cả 4 điều kiện độc lập tại Mục 3.1.1 (bao gồm văn bản chấp thuận của chủ sở hữu) | DỪNG (NO-GO) Branch A; thảo luận cùng Mentor về Branch B. |
+| **Phê duyệt của Mentor (Branch B)** | Mentor phê duyệt bằng văn bản cho phép sử dụng dataset mở | DỪNG (NO-GO) Branch B; quay lại tìm nguồn được phép crawl. |
+| **Tính toàn vẹn biến mục tiêu (`price_vnd`)** | Tỷ lệ parse thành công > 95% trên các tin có giá cụ thể trong mẫu pilot | Tạm dừng; cập nhật regex trong `price_parser.py` và kiểm thử lại. |
+| **Độ đầy đủ biến cốt lõi (`brand`, `model`, `year`)** | Tỷ lệ missing = 0% trên các bản ghi hợp lệ | Điều chỉnh bộ lọc DOM selector; loại bỏ các bản ghi khuyết tật. |
+| **Tỷ lệ thiếu biến tùy chọn (`mileage_km`)** | Tỷ lệ missing $\le$ 20% trên mẫu pilot | Ghi nhận Warning; chuẩn bị kỹ thuật Imputation ở Phase 4/5. |
+| **Tính ổn định của server (Branch A)** | Không gặp mã lỗi 403, 429 hay thử thách CAPTCHA | Tăng delay từ 3.0s lên 5.0s; nếu vẫn bị chặn thì dừng pilot vĩnh viễn. |
+| **Tính xác thực của dataset mở (Branch B)** | Checksum SHA-256 khớp chuẩn, schema chứa đủ các đặc trưng cốt lõi | Từ chối sử dụng dataset; tìm kiếm nguồn thay thế khác. |
 
 ---
 
-## 7. Các Tạo Tác (Artifacts) Cần Lưu Để Đảm Bảo Tính Tái Hiện (Reproducibility)
+## 5. Tạo Tác Đầu Ra Dự Kiến Của Giai Đoạn Pilot (Expected Deliverables)
 
-Để quy trình pilot có thể kiểm chứng độc lập bởi Mentor:
-1. **Raw Pilot Dump**: Lưu tệp `data/raw/pilot_sample_raw.json` chứa các bản ghi JSON trích xuất nguyên trạng từ HTML (đã lược bỏ số điện thoại/tên người bán).
-2. **Audit Report Log**: Tệp `reports/pilot_quality_summary.md` chứa bảng thống kê tỷ lệ missing, bảng phân phối min/median/max và danh sách các lỗi parser gặp phải.
-3. **Pilot Script**: Script độc lập `src/data/pilot_sampler.py` có khả năng chạy lại với seed và danh sách URL kiểm tra rõ ràng.
+Sau khi được Mentor phê chuẩn nhánh triển khai:
+1. `data/raw/pilot_sample.jsonl` (cho Branch A quy mô 30–50 tin) hoặc `data/raw/vietnam_automobile_dataset.csv` kèm tệp `checksum.sha256` (cho Branch B).
+2. `reports/pilot_quality_summary.md`: Báo cáo đánh giá chất lượng thực nghiệm, phân phối dữ liệu thực tế và quyết định mở rộng toàn quy mô.

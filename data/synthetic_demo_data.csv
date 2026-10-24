@@ -1,0 +1,41 @@
+listing_id,brand,model,year,car_age,mileage_km,is_zero_mileage,seats,doors,engine_displacement_l,is_luxury_brand,origin,transmission,fuel_type,body_type,condition,price_vnd,data_tag
+DEMO_0001,Toyota,Vios,2020,3,45000.0,0,5.0,4.0,1.5,0,Trong nước,Tự động,Xăng,Sedan,Xe đã dùng,450000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0002,Toyota,Vios,2022,1,15000.0,0,5.0,4.0,1.5,0,Trong nước,Tự động,Xăng,Sedan,Xe đã dùng,520000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0003,Toyota,Corolla Cross,2021,2,35000.0,0,5.0,5.0,1.8,0,Nhập khẩu,Tự động,Xăng,SUV,Xe đã dùng,740000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0004,Toyota,Fortuner,2019,4,80000.0,0,7.0,5.0,2.4,0,Trong nước,Tự động,Dầu,SUV,Xe đã dùng,850000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0005,Toyota,Camry,2021,2,28000.0,0,5.0,4.0,2.0,0,Nhập khẩu,Tự động,Xăng,Sedan,Xe đã dùng,1050000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0006,Mazda,CX-5,2022,1,20000.0,0,5.0,5.0,2.0,0,Trong nước,Tự động,Xăng,SUV,Xe đã dùng,730000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0007,Mazda,3,2020,3,42000.0,0,5.0,4.0,1.5,0,Trong nước,Tự động,Xăng,Sedan,Xe đã dùng,560000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0008,Mazda,6,2018,5,65000.0,0,5.0,4.0,2.0,0,Trong nước,Tự động,Xăng,Sedan,Xe đã dùng,590000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0009,Hyundai,Accent,2021,2,32000.0,0,5.0,4.0,1.4,0,Trong nước,Tự động,Xăng,Sedan,Xe đã dùng,430000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0010,Hyundai,Grand i10,2019,4,55000.0,0,5.0,4.0,1.2,0,Trong nước,Số tay,Xăng,Hatchback,Xe đã dùng,290000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0011,Hyundai,SantaFe,2021,2,40000.0,0,7.0,5.0,2.2,0,Trong nước,Tự động,Dầu,SUV,Xe đã dùng,1080000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0012,Hyundai,Tucson,2020,3,48000.0,0,5.0,5.0,2.0,0,Trong nước,Tự động,Xăng,SUV,Xe đã dùng,720000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0013,Kia,Morning,2018,5,60000.0,0,5.0,4.0,1.25,0,Trong nước,Số tay,Xăng,Hatchback,Xe đã dùng,240000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0014,Kia,Cerato,2019,4,50000.0,0,5.0,4.0,1.6,0,Trong nước,Tự động,Xăng,Sedan,Xe đã dùng,490000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0015,Kia,Seltos,2022,1,18000.0,0,5.0,5.0,1.4,0,Trong nước,Tự động,Xăng,SUV,Xe đã dùng,620000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0016,Kia,Carnival,2022,1,25000.0,0,7.0,5.0,2.2,0,Trong nước,Tự động,Dầu,MPV,Xe đã dùng,1250000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0017,Honda,City,2021,2,30000.0,0,5.0,4.0,1.5,0,Trong nước,Tự động,Xăng,Sedan,Xe đã dùng,490000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0018,Honda,CR-V,2020,3,45000.0,0,7.0,5.0,1.5,0,Trong nước,Tự động,Xăng,SUV,Xe đã dùng,820000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0019,Ford,Ranger,2020,3,60000.0,0,5.0,4.0,2.0,0,Nhập khẩu,Tự động,Dầu,Bán tải / Bán tải cabin kép,Xe đã dùng,650000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0020,Ford,Everest,2021,2,38000.0,0,7.0,5.0,2.0,0,Nhập khẩu,Tự động,Dầu,SUV,Xe đã dùng,1120000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0021,Mitsubishi,Xpander,2021,2,40000.0,0,7.0,5.0,1.5,0,Nhập khẩu,Tự động,Xăng,MPV,Xe đã dùng,540000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0022,Mercedes-Benz,C200,2021,2,35000.0,0,5.0,4.0,1.5,1,Trong nước,Tự động,Xăng,Sedan,Xe đã dùng,1350000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0023,Mercedes-Benz,E300,2020,3,40000.0,0,5.0,4.0,2.0,1,Trong nước,Tự động,Xăng,Sedan,Xe đã dùng,2100000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0024,Mercedes-Benz,GLC 300,2021,2,30000.0,0,5.0,5.0,2.0,1,Trong nước,Tự động,Xăng,SUV,Xe đã dùng,1850000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0025,Mercedes-Benz,S450,2019,4,45000.0,0,5.0,4.0,3.0,1,Nhập khẩu,Tự động,Xăng,Sedan,Xe đã dùng,3600000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0026,BMW,320i,2020,3,32000.0,0,5.0,4.0,2.0,1,Nhập khẩu,Tự động,Xăng,Sedan,Xe đã dùng,1250000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0027,BMW,X5,2019,4,50000.0,0,7.0,5.0,3.0,1,Nhập khẩu,Tự động,Xăng,SUV,Xe đã dùng,2800000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0028,Lexus,ES 250,2021,2,22000.0,0,5.0,4.0,2.5,1,Nhập khẩu,Tự động,Xăng,Sedan,Xe đã dùng,2250000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0029,Lexus,RX 350,2020,3,35000.0,0,5.0,5.0,3.5,1,Nhập khẩu,Tự động,Xăng,SUV,Xe đã dùng,3450000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0030,Lexus,LX 570,2018,5,70000.0,0,8.0,5.0,5.7,1,Nhập khẩu,Tự động,Xăng,SUV,Xe đã dùng,6800000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0031,VinFast,Fadil,2021,2,25000.0,0,5.0,5.0,1.4,0,Trong nước,Tự động,Xăng,Hatchback,Xe đã dùng,330000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0032,VinFast,Lux A2.0,2020,3,38000.0,0,5.0,4.0,2.0,0,Trong nước,Tự động,Xăng,Sedan,Xe đã dùng,570000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0033,VinFast,Lux SA2.0,2020,3,42000.0,0,7.0,5.0,2.0,0,Trong nước,Tự động,Xăng,SUV,Xe đã dùng,720000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0034,VinFast,VF 8,2023,0,10000.0,0,5.0,5.0,0.0,0,Trong nước,Tự động,Điện,SUV,Xe đã dùng,850000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0035,Toyota,Vios,2023,0,0.0,1,5.0,4.0,1.5,0,Trong nước,Tự động,Xăng,Sedan,Xe mới,545000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0036,Hyundai,Accent,2023,0,0.0,1,5.0,4.0,1.4,0,Trong nước,Tự động,Xăng,Sedan,Xe mới,472000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0037,Mazda,CX-5,2023,0,0.0,1,5.0,5.0,2.0,0,Trong nước,Tự động,Xăng,SUV,Xe mới,759000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0038,Ford,Territory,2023,0,0.0,1,5.0,5.0,1.5,0,Trong nước,Tự động,Xăng,SUV,Xe mới,822000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0039,Mercedes-Benz,GLC 300,2023,0,0.0,1,5.0,5.0,2.0,1,Trong nước,Tự động,Xăng,SUV,Xe mới,2799000000.0,SYNTHETIC_DEMO_ONLY
+DEMO_0040,Porsche,Macan,2022,1,12000.0,0,5.0,5.0,2.0,1,Nhập khẩu,Tự động,Xăng,SUV,Xe đã dùng,3650000000.0,SYNTHETIC_DEMO_ONLY

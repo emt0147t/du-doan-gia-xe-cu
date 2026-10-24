@@ -1,0 +1,18 @@
+{
+  "cohort_a_champion_on_older_cars_2010_2014": {
+    "sample_size": 3789,
+    "mae": 314146237.62,
+    "rmse": 803265070.65,
+    "r2": 0.5438,
+    "mdape": 29.64
+  },
+  "retrained_on_cohort_b_full": {
+    "total_size": 27299,
+    "val_mae": 106709997.27,
+    "val_r2": 0.95,
+    "val_mdape": 4.44,
+    "test_mae": 110551234.41,
+    "test_r2": 0.9567,
+    "test_mdape": 4.44
+  }
+}

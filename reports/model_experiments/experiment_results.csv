@@ -1,0 +1,11 @@
+experiment_name,model_type,target_type,preprocessor_type,hyperparameters,fit_time_seconds,predict_time_seconds,mae,rmse,r2,mape,mdape
+Tree_RandomForest_Tuned_LogTarget,random_forest,log,tree,"{""n_estimators"": 150, ""max_depth"": 24, ""min_samples_leaf"": 1}",4.943,0.082,142934536.73,950065306.16,0.8694,7.06,4.25
+Tree_RandomForest_LogTarget,random_forest,log,tree,"{""n_estimators"": 100, ""max_depth"": 16, ""min_samples_leaf"": 2}",8.454,0.103,159102970.69,1043403505.8,0.8425,8.15,4.94
+Tree_RandomForest_RawTarget,random_forest,raw,tree,"{""n_estimators"": 100, ""max_depth"": 16, ""min_samples_leaf"": 2}",8.359,0.126,168751598.02,852439763.49,0.8949,10.6,6.61
+Tree_HistGBM_LogTarget,hist_gradient_boosting,log,tree,"{""max_iter"": 150, ""learning_rate"": 0.1, ""max_leaf_nodes"": 31}",4.2,0.03,180831847.37,1208263094.84,0.7888,8.34,5.37
+Tree_HistGBM_RawTarget,hist_gradient_boosting,raw,tree,"{""max_iter"": 150, ""learning_rate"": 0.1, ""max_leaf_nodes"": 31}",7.012,0.046,201925471.12,1051262545.89,0.8401,12.1,7.84
+Linear_Ridge_LogTarget,ridge,log,linear,"{""alpha"": 10.0}",0.137,0.014,255658033.3,1441060500.2,0.6996,10.66,7.72
+Linear_Lasso_LogTarget,lasso,log,linear,"{""alpha"": 0.001, ""max_iter"": 3000}",1.228,0.018,370691839.58,1772436353.05,0.5455,16.3,12.22
+Linear_Ridge_RawTarget,ridge,raw,linear,"{""alpha"": 10.0}",0.167,0.014,379429331.8,1153551727.49,0.8075,34.87,23.72
+Baseline_Dummy_Median,dummy_median,raw,tree,{},0.089,0.012,914616758.83,2721373087.91,-0.0714,48.88,39.83
+Baseline_Dummy_Mean,dummy_mean,raw,tree,{},0.064,0.016,1164209469.83,2629312835.96,-0.0001,123.46,94.34

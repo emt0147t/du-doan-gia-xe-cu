@@ -1,0 +1,9 @@
+{
+  "generated_at_utc": "2026-10-19T05:27:34.557106+00:00",
+  "total_experiments": 10,
+  "best_model_by_mae": "Tree_RandomForest_Tuned_LogTarget",
+  "best_val_mae": 142934536.73,
+  "best_val_r2": 0.8694,
+  "results_table": "reports\\model_experiments\\experiment_results.csv",
+  "predictions_table": "reports\\model_experiments\\validation_predictions.csv"
+}

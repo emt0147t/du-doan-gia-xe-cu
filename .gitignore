@@ -11,6 +11,7 @@ __pycache__/
 build/
 develop-eggs/
 dist/
+staging/
 downloads/
 eggs/
 .eggs/
@@ -62,3 +63,8 @@ Thumbs.db
 .pytest_cache/
 .coverage
 htmlcov/
+
+# Model binaries (large binary artifacts)
+models/*.joblib
+!models/champion_random_forest.joblib
+models/*.pkl
