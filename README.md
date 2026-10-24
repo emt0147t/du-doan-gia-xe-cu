@@ -16,7 +16,7 @@ Repository được tinh gọn tối đa để người chấm dễ dàng theo d
 ├── README.md                                
 ├── requirements.txt                        
 ├── notebooks/
-│   └── used_car_price_prediction.ipynb     
+│   └── used_car_price_prediction_fixed.ipynb     
 ├── data/
 │   ├── DATA_README.md                       
 │   └── dataset_manifest.json              
