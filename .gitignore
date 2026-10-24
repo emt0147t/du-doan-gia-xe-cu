@@ -3,52 +3,15 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# C extensions
-*.so
-
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-staging/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
 # Virtual environments
 .venv/
 venv/
 ENV/
 env/
-env.bak/
-venv.bak/
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
-
-# Data files (do not commit raw scraped datasets or large processed matrices)
-data/raw/*
-!data/raw/.gitkeep
-data/processed/*
-!data/processed/.gitkeep
-
-# Environment variables & secrets
-.env
-.env.local
-*.secret
-*.pem
-credentials.json
 
 # IDEs & OS specific
 .vscode/
@@ -59,12 +22,42 @@ credentials.json
 .DS_Store
 Thumbs.db
 
-# Test & coverage
+# Test, coverage & packaging
 .pytest_cache/
 .coverage
 htmlcov/
+build/
+dist/
+staging/
+*.egg-info/
+pytest.ini
 
-# Model binaries (large binary artifacts)
-models/*.joblib
-!models/champion_random_forest.joblib
-models/*.pkl
+# Root runner scripts (kept on local machine, not tracked in minimalist repo)
+create_submission_package.py
+evaluate_final_test.py
+generate_feature_importance.py
+generate_phase6_figures.py
+run_cohort_b_sensitivity.py
+run_phase6_experiments.py
+save_champion_model.py
+
+# Local development, documentation, and source directories
+docs/
+models/
+presentation/
+scripts/
+src/
+tests/
+
+# Data directory: only track DATA_README.md and dataset_manifest.json
+data/*
+!data/DATA_README.md
+!data/dataset_manifest.json
+
+# Notebooks directory: only track used_car_price_prediction.ipynb
+notebooks/*
+!notebooks/used_car_price_prediction.ipynb
+
+# Reports directory: only track model_comparison.csv
+reports/*
+!reports/model_comparison.csv

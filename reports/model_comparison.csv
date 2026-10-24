@@ -1,0 +1,22 @@
+split_protocol,split_type,model_name,target_type,mae_vnd,rmse_vnd,r2,mape_pct,mdape_pct,notes
+Phase 6 (Random Split),"Validation (2,351 rows)",Tree_RandomForest_Tuned_LogTarget,log,142934536.73,950065306.16,0.8694,7.06,4.25,"Tuned/trained on 18,808 train rows, evaluated on 2,351 val rows"
+Phase 6 (Random Split),"Validation (2,351 rows)",Tree_RandomForest_LogTarget,log,159102970.69,1043403505.8,0.8425,8.15,4.94,"Tuned/trained on 18,808 train rows, evaluated on 2,351 val rows"
+Phase 6 (Random Split),"Validation (2,351 rows)",Tree_RandomForest_RawTarget,raw,168751598.02,852439763.49,0.8949,10.6,6.61,"Tuned/trained on 18,808 train rows, evaluated on 2,351 val rows"
+Phase 6 (Random Split),"Validation (2,351 rows)",Tree_HistGBM_LogTarget,log,180831847.37,1208263094.84,0.7888,8.34,5.37,"Tuned/trained on 18,808 train rows, evaluated on 2,351 val rows"
+Phase 6 (Random Split),"Validation (2,351 rows)",Tree_HistGBM_RawTarget,raw,201925471.12,1051262545.89,0.8401,12.1,7.84,"Tuned/trained on 18,808 train rows, evaluated on 2,351 val rows"
+Phase 6 (Random Split),"Validation (2,351 rows)",Linear_Ridge_LogTarget,log,255658033.3,1441060500.2,0.6996,10.66,7.72,"Tuned/trained on 18,808 train rows, evaluated on 2,351 val rows"
+Phase 6 (Random Split),"Validation (2,351 rows)",Linear_Lasso_LogTarget,log,370691839.58,1772436353.05,0.5455,16.3,12.22,"Tuned/trained on 18,808 train rows, evaluated on 2,351 val rows"
+Phase 6 (Random Split),"Validation (2,351 rows)",Linear_Ridge_RawTarget,raw,379429331.8,1153551727.49,0.8075,34.87,23.72,"Tuned/trained on 18,808 train rows, evaluated on 2,351 val rows"
+Phase 6 (Random Split),"Validation (2,351 rows)",Baseline_Dummy_Median,raw,914616758.83,2721373087.91,-0.0714,48.88,39.83,"Tuned/trained on 18,808 train rows, evaluated on 2,351 val rows"
+Phase 6 (Random Split),"Validation (2,351 rows)",Baseline_Dummy_Mean,raw,1164209469.83,2629312835.96,-0.0001,123.46,94.34,"Tuned/trained on 18,808 train rows, evaluated on 2,351 val rows"
+Phase 6 (Random Split),"Test (2,351 rows)",Tree_RandomForest_Tuned_LogTarget (CHAMPION),log,111793580.73,482625123.08,0.9448,6.84,4.29,Frozen model evaluated once on unseen random test set
+Phase 6 (Random Split),"Test (2,351 rows)",Tree_HistGBM_LogTarget,log,148862299.13,606933188.5,0.9127,8.23,5.58,Frozen model evaluated once on unseen random test set
+Phase 6 (Random Split),"Test (2,351 rows)",Linear_Ridge_LogTarget,log,195991013.72,787720525.31,0.8529,11.02,7.96,Frozen model evaluated once on unseen random test set
+Phase 6 (Random Split),"Test (2,351 rows)",Baseline_Dummy_Median,raw,844852403.23,2148985444.3,-0.0947,49.93,39.83,Frozen model evaluated once on unseen random test set
+Phase 6 (Random Split),"Test (2,351 rows)",Baseline_Dummy_Mean,raw,1090786462.56,2054291879.26,-0.0004,125.07,94.07,Frozen model evaluated once on unseen random test set
+Phase 6.2 (Group-Aware Split),"Validation (2,351 rows)",Baseline_Dummy_Median,raw,938419396.0,2673491447.17,-0.0792,50.32,40.03,Group-aware split with StratifiedGroupKFold (0% duplicate cluster leakage)
+Phase 6.2 (Group-Aware Split),"Test (2,350 rows)",Baseline_Dummy_Median,raw,883823404.26,2325531292.4,-0.0913,48.78,39.53,Frozen champion evaluated on group-isolated test set (0% cross-posting overlap)
+Phase 6.2 (Group-Aware Split),"Validation (2,351 rows)",Baseline_Dummy_Mean,raw,1179847039.57,2574267920.89,-0.0006,124.82,93.42,Group-aware split with StratifiedGroupKFold (0% duplicate cluster leakage)
+Phase 6.2 (Group-Aware Split),"Test (2,350 rows)",Baseline_Dummy_Mean,raw,1129230214.67,2226104276.13,-0.0,122.22,92.44,Frozen champion evaluated on group-isolated test set (0% cross-posting overlap)
+Phase 6.2 (Group-Aware Split),"Validation (2,351 rows)",Tree_RandomForest_Tuned_LogTarget,log,116470126.78,556871037.74,0.9532,6.93,4.44,Group-aware split with StratifiedGroupKFold (0% duplicate cluster leakage)
+Phase 6.2 (Group-Aware Split),"Test (2,350 rows)",Tree_RandomForest_Tuned_LogTarget,log,130761443.01,821395225.51,0.8638,6.88,4.29,Frozen champion evaluated on group-isolated test set (0% cross-posting overlap)

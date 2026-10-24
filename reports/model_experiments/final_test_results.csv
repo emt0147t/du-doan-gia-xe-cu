@@ -1,6 +1,0 @@
-experiment_name,model_type,target_type,preprocessor_type,hyperparameters,fit_time_seconds,predict_time_seconds,mae,rmse,r2,mape,mdape
-Tree_RandomForest_Tuned_LogTarget (CHAMPION),random_forest,log,tree,"{""n_estimators"": 150, ""max_depth"": 24, ""min_samples_leaf"": 1}",3.96,0.066,111793580.73,482625123.08,0.9448,6.84,4.29
-Tree_HistGBM_LogTarget,hist_gradient_boosting,log,tree,"{""max_iter"": 150, ""learning_rate"": 0.1, ""max_leaf_nodes"": 31}",3.208,0.025,148862299.13,606933188.5,0.9127,8.23,5.58
-Linear_Ridge_LogTarget,ridge,log,linear,"{""alpha"": 10.0}",0.127,0.014,195991013.72,787720525.31,0.8529,11.02,7.96
-Baseline_Dummy_Median,dummy_median,raw,tree,{},0.088,0.01,844852403.23,2148985444.3,-0.0947,49.93,39.83
-Baseline_Dummy_Mean,dummy_mean,raw,tree,{},0.064,0.011,1090786462.56,2054291879.26,-0.0004,125.07,94.07

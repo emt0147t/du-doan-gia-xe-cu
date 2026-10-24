@@ -21,7 +21,7 @@ Theo nguyên tắc quản trị dữ liệu nghiêm ngặt của khóa đào t�
 
 ---
 
-## 2. Hướng Dẫn Cung Cấp Dữ Liệu Cục Bộ (Local Setup Instructions)
+## 2. Hướng Dẫn Thiết Lập Dữ Liệu Cục Bộ (Local Setup Instructions)
 
 Để chạy lại toàn bộ pipeline học máy trên máy tính của bạn với dữ liệu thật:
 
@@ -45,39 +45,22 @@ Trước khi chạy, hãy kiểm tra mã băm SHA-256 để đảm bảo dữ li
 
 *(Xem thông tin chi tiết các tệp phân chia và làm sạch trong [`data/dataset_manifest.json`](dataset_manifest.json))*
 
-### Bước 3: Tái tạo các tập dữ liệu sạch và tập chia
-Khi dữ liệu thô đã được đặt đúng vị trí, bạn có thể chạy các script tự động:
-```powershell
-# Làm sạch dữ liệu và tạo Cohort A (23,510 dòng)
-python src/data/cleaning.py
-
-# Tạo các tập chia ngẫu nhiên 80/10/10 (Phase 6)
-python src/data/split_data.py
-
-# Tạo các tập chia nhóm cách ly tin trùng 100% (Phase 6.2)
-python src/data/duplicate_groups.py
-```
+### Bước 3: Chạy lại toàn bộ quy trình từ Jupyter Notebook
+Toàn bộ logic làm sạch dữ liệu, trích xuất đặc trưng, huấn luyện mô hình và đánh giá đã được đóng gói độc lập trong notebook:
+- Mở và chạy: [`notebooks/used_car_price_prediction.ipynb`](../notebooks/used_car_price_prediction.ipynb)
+- Notebook sẽ tự động nhận diện tệp `car_detail.csv` tại `data/raw/external/mquaan_car_price/` để thực thi phân tích.
+- Nếu không có sẵn tệp dữ liệu thật, notebook sẽ tự động chuyển sang chế độ mô phỏng (`SYNTHETIC_DEMO`) để kiểm tra toàn bộ luồng mã mà không báo lỗi.
 
 ---
 
-## 3. Dữ Liệu Mẫu Giả Lập (Synthetic Demo Data)
-
-Để tạo điều kiện cho mentor và người đánh giá có thể kiểm tra luồng code mà không bắt buộc phải tải tệp dữ liệu thật 21 MB, dự án cung cấp sẵn tệp:
-- **Đường dẫn**: [`data/synthetic_demo_data.csv`](synthetic_demo_data.csv)
-- **Đặc điểm**: Dữ liệu nhân tạo độc lập (100% Synthetic), không chứa bất kỳ PII, số điện thoại hay thông tin cá nhân nào.
-- **Mục đích**: **CHỈ DÙNG CHO DEMO & SMOKE TEST (SYNTHETIC DEMO ONLY)**.
-- **Cảnh báo**: Tệp demo không dùng để tái tạo hay tuyên bố đạt được các chỉ số hiệu năng thực nghiệm của Phase 6 hay Phase 6.2.
-
----
-
-## 4. Tóm Tắt Cấu Trúc Đặc Trưng (Feature Dictionary Summary)
+## 3. Tóm Tắt Cấu Trúc Đặc Trưng (Feature Dictionary Summary)
 
 Bộ dữ liệu Cohort A sạch (23,510 bản ghi xe từ năm 2015 trở lại đây) gồm 15 đặc trưng chính quy:
 
 | STT | Tên đặc trưng | Loại | Diễn giải nghiệp vụ |
 | :---: | :--- | :---: | :--- |
 | 1 | `year` | Numeric | Năm sản xuất xuất xưởng [2015 - 2023] |
-| 2 | `car_age` | Numeric | Tuổi của xe tính tới 2023 ($2023 - \text{year}$) |
+| 2 | `car_age` | Numeric | Tuổi của xe tính tới 2024 ($2024 - \text{year}$) |
 | 3 | `mileage_km` | Numeric | Số km đã lăn bánh theo ODO (đã xử lý ngoại lai) |
 | 4 | `is_zero_mileage` | Numeric | Cờ nhận diện xe mới 100% tại showroom (ODO = 0 km) |
 | 5 | `seats` | Numeric | Số chỗ ngồi theo giấy tờ kiểm định [2 - 16] |
@@ -86,7 +69,7 @@ Bộ dữ liệu Cohort A sạch (23,510 bản ghi xe từ năm 2015 trở lại
 | 8 | `is_luxury_brand` | Numeric | Cờ nhị phân phân khúc xe sang (Mercedes, Lexus, BMW,...) |
 | 9 | `brand` | Categorical | Hãng sản xuất xe (48 thương hiệu) |
 | 10 | `model` | Categorical | Tên dòng xe thương mại (451 dòng xe) |
-| 11 | `origin` | Categorical | Nguồn gốc xuất xứ (Lắp ráp trong nước vs Nhập khẩu) |
+| 11 | `origin` | Categorical | Nguồn gốc xuất xứ (Trong nước vs Nhập khẩu) |
 | 12 | `transmission` | Categorical | Hộp số (Tự động vs Số tay) |
 | 13 | `fuel_type` | Categorical | Nhiên liệu (Xăng, Dầu, Hybrid, Điện) |
 | 14 | `body_type` | Categorical | Kiểu dáng xe (Sedan, SUV, Crossover, Hatchback,...) |

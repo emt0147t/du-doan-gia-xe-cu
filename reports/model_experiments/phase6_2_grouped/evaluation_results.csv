@@ -1,4 +1,0 @@
-model_name,target_type,val_mae,val_rmse,val_r2,val_mape,val_mdape,test_mae,test_rmse,test_r2,test_mape,test_mdape,fit_time_seconds
-Baseline_Dummy_Median,raw,938419396.0,2673491447.17,-0.0792,50.32,40.03,883823404.26,2325531292.4,-0.0913,48.78,39.53,0.234
-Baseline_Dummy_Mean,raw,1179847039.57,2574267920.89,-0.0006,124.82,93.42,1129230214.67,2226104276.13,-0.0,122.22,92.44,0.134
-Tree_RandomForest_Tuned_LogTarget,log,116470126.78,556871037.74,0.9532,6.93,4.44,130761443.01,821395225.51,0.8638,6.88,4.29,6.237

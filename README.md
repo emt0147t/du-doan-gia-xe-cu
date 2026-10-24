@@ -1,92 +1,47 @@
 # Used Car Price Prediction in Vietnam
-## Xây Dựng Hệ Thống Machine Learning Toàn Diện & Thẩm Định Khoa Học Độ Bền
+## Xây Dựng Hệ Thống Machine Learning Định Giá Ô Tô Đã Qua Sử Dụng Toàn Diện & Đánh Giá Độ Bền Khoa Học
 *(AI Club End-Training Mini Project)*
 
 [![Python Version](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Tests Status](https://img.shields.io/badge/tests-87%20passed-brightgreen.svg)](tests/)
-[![Champion Model](https://img.shields.io/badge/champion-RandomForest--Tuned--LogTarget-orange.svg)](models/)
-[![Test MdAPE](https://img.shields.io/badge/Test%20MdAPE-4.29%25-blueviolet.svg)](reports/phase6_2_group_aware_evaluation.md)
+[![Scikit-Learn](https://img.shields.io/badge/scikit--learn-1.4+-orange.svg)](https://scikit-learn.org/)
+[![Champion Model](https://img.shields.io/badge/champion-RandomForest--Tuned--LogTarget-brightgreen.svg)](reports/model_comparison.csv)
+[![Test MdAPE](https://img.shields.io/badge/Test%20MdAPE-4.29%25-blueviolet.svg)](reports/model_comparison.csv)
 
 ---
 
-## 1. Tổng Quan Dự Án & Mục Tiêu (Project Overview)
+## 1. Tổng Quan Bài Toán (Problem Overview)
 
-Dự án **Used Car Price Prediction in Vietnam** là công trình nghiên cứu và phát triển phần mềm Machine Learning giải quyết bài toán định lượng hóa và dự báo giá chào bán ô tô đã qua sử dụng trên thị trường thứ cấp tại Việt Nam.
+Dự án **Used Car Price Prediction in Vietnam** giải quyết bài toán định lượng hóa và dự báo giá chào bán ô tô đã qua sử dụng trên thị trường thứ cấp tại Việt Nam từ 15 đặc trưng kỹ thuật, vận hành và phân khúc thị trường.
 
 - **Dạng bài toán**: Supervised Learning (Học có giám sát) — **Tabular Regression (Hồi quy dữ liệu bảng)**.
 - **Biến mục tiêu (Target)**: `price_vnd` — Giá niêm yết chào bán chính thức của ô tô tính theo Việt Nam Đồng (VND).
-- **Không gian tối ưu hóa**: Huấn luyện trên không gian logarit tự nhiên $y_{\text{log}} = \ln(\text{price\_vnd})$ nhằm nén dải động giá và tối ưu hóa **sai số tỷ đối phần trăm (Relative Percentage Error)**.
-- **Mục tiêu thực tiễn**: Cung cấp một mỏ neo định giá tham chiếu độc lập (Objective Market Price Anchor) cho người mua cá nhân và chuyên viên thẩm định xe trong biên độ thương lượng phổ biến **3% – 5%**.
+- **Hàm mục tiêu tối ưu**: Huấn luyện trên không gian logarit tự nhiên $y_{\text{log}} = \ln(\text{price\_vnd})$ nhằm nén dải động giá và tối ưu hóa **sai số tỷ đối phần trăm (Relative Percentage Error)** thay vì giá trị tiền tệ tuyệt đối.
+- **Mục tiêu thực tiễn**: Cung cấp một mỏ neo định giá tham chiếu khách quan (Objective Price Anchor) phục vụ người mua cá nhân và chuyên viên thẩm định. Mô hình đạt sai số trung vị tương đối (**MdAPE $\approx 4.29\%$**) nằm trọn vẹn trong biên độ thương lượng phổ biến **3% – 5%** của thị trường xe cũ Việt Nam.
 
 ---
 
-## 2. Nguồn Gốc Dữ Liệu & Bản Quyền Chia Sẻ (Dataset Provenance & Governance)
+## 2. Cấu Trúc Repository Tối Giản (Minimalist Structure)
 
-### 2.1. Nguồn dữ liệu
-Dữ liệu được tiếp nhận từ tập dữ liệu thứ cấp công khai trên Kaggle/GitHub do tác giả Mai Quốc Ân công bố, có nguồn gốc thu thập từ nền tảng thương mại điện tử `bonbanh.com` với quy mô ban đầu **30,652 tin đăng**.
-
-### 2.2. Trạng thái phân phối trên GitHub Public Repository
-Để bảo vệ quyền riêng tư cá nhân và tuân thủ đạo đức dữ liệu:
-- **Tệp dữ liệu CSV thực tế (`data/raw/` và `data/processed/`) KHÔNG được commit lên public repository** do quyền tái phân phối thương mại của bên thứ ba chưa được xác minh đầy đủ và tệp thô chứa văn bản có thể lẫn số điện thoại người bán (PII).
-- **Giải pháp thay thế**:
-  - [`data/DATA_README.md`](data/DATA_README.md): Hướng dẫn chi tiết cách tải và thiết lập dữ liệu thực tế tại máy cục bộ.
-  - [`data/dataset_manifest.json`](data/dataset_manifest.json): Bảng kê khai đầy đủ mã băm SHA-256, số dòng, số cột của các tệp dữ liệu thực tế.
-  - [`data/synthetic_demo_data.csv`](data/synthetic_demo_data.csv): Bộ dữ liệu nhân tạo độc lập (40 xe, 100% Non-PII, gắn nhãn `SYNTHETIC_DEMO_ONLY`) phục vụ chạy thử nghiệm pipeline mà không cần dữ liệu thật.
-
----
-
-## 3. Cấu Trúc Thư Mục Kho Lưu Trữ (Repository Structure)
+Repository được tinh gọn tối đa để người chấm dễ dàng theo dõi toàn bộ logic trong một notebook duy nhất và đối chiếu số liệu kiểm toán:
 
 ```text
-ai-club-end-training/
-├── README.md                          # Tài liệu hướng dẫn trung tâm cho Mentor
-├── requirements.txt                   # Danh sách thư viện Python cần thiết
-├── .gitignore                         # Cấu hình loại trừ Git an toàn
+├── README.md                                # Hướng dẫn tổng quan, cài đặt và tóm tắt kết quả
+├── requirements.txt                         # Danh sách thư viện Python cần thiết
 ├── notebooks/
-│   ├── used_car_price_prediction.ipynb # Notebook trung tâm 13 phần chạy toàn trình
-│   └── 04_eda.ipynb                   # Notebook khám phá dữ liệu ban đầu Phase 4
+│   └── used_car_price_prediction.ipynb     # Notebook trung tâm 13 phần độc lập, tự chứa toàn bộ mã nguồn
 ├── data/
-│   ├── DATA_README.md                 # Hướng dẫn dữ liệu, bản quyền & cách đặt data local
-│   ├── dataset_manifest.json          # Bảng kê mã băm SHA-256 các tập dữ liệu
-│   ├── synthetic_demo_data.csv        # Dữ liệu mẫu nhân tạo phục vụ kiểm thử
-│   └── metadata/                      # Quản trị siêu dữ liệu và kiểm tra toàn vẹn
-├── models/
-│   ├── champion_random_forest.joblib  # Artifact mô hình vô địch (30.98 MB, nạp sẵn)
-│   └── champion_model_metadata.json   # Metadata kiểm toán kiến trúc mô hình
-├── presentation/
-│   ├── ai_club_final_defense.pptx     # 15 slide thuyết trình 16:9 bảo vệ tốt nghiệp
-│   ├── speaker_notes.md               # Lời thoại thuyết trình chi tiết cho 15 slide
-│   └── mentor_defense_qa.md           # Bộ 26 câu hỏi phản biện chuyên sâu và câu trả lời
-├── src/
-│   ├── data/
-│   │   ├── price_parser.py            # Bộ bóc tách giá tiền tiếng Việt sang VND
-│   │   ├── validation.py              # Data Quality Contract & Validation logic
-│   │   ├── cleaning.py                # Pipeline làm sạch dữ liệu & trích xuất đặc trưng
-│   │   ├── preprocessing.py           # ColumnTransformer an toàn rò rỉ (Tree & Linear)
-│   │   ├── split_data.py              # Phân chia tập 80/10/10 phân tầng deciles
-│   │   └── duplicate_groups.py        # Thuật toán gom cụm 4 cấp độ và chia nhóm Phase 6.2
-│   └── models/
-│       ├── evaluate.py                # Tính toán các metric hồi quy & nghịch đảo log
-│       └── predict.py                 # Module suy luận CLI & dự đoán giá xe thực tế
+│   ├── DATA_README.md                       # Hướng dẫn nguồn gốc dữ liệu, bản quyền & cách đặt data local
+│   └── dataset_manifest.json                # Bảng kê khai mã băm SHA-256 các tập dữ liệu thực tế
 ├── reports/
-│   ├── final_project_report.md        # Báo cáo kỹ thuật tổng kết 19 phần toàn diện
-│   ├── final_consistency_checklist.md # Bảng đối soát số liệu & mã băm 100% khớp
-│   ├── phase7_completion_checklist.md # Biên bản nghiệm thu hoàn thành Phase 7
-│   ├── DELIVERY_STATUS.md             # Nhật ký kiểm thử & xác thực trước khi nộp
-│   ├── figures/                       # Hệ thống biểu đồ trực quan hóa
-│   │   ├── phase4/                    # 19 biểu đồ khám phá dữ liệu EDA
-│   │   ├── phase6/                    # 7 biểu đồ mô hình hóa, phần dư & feature importance
-│   │   └── phase6_2/                  # 2 biểu đồ so sánh độ bền chia nhóm Phase 6 vs 6.2
-│   └── model_experiments/             # Kết quả thực nghiệm 10 cấu hình CSV & JSON
-└── tests/                             # 87 bài unit test tự động (100% Offline)
+│   └── model_comparison.csv                 # Bảng so sánh kết quả 21 thực nghiệm (Phase 6 & Phase 6.2)
+└── .gitignore                               # Quy tắc loại trừ an toàn (loại bỏ dữ liệu PII và artifact tạm)
 ```
 
 ---
 
-## 4. Hướng Dẫn Cài Đặt & Môi Trường Thực Thi (Quickstart)
+## 3. Cài Đặt Môi Trường & Thực Thi (Quickstart)
 
-### 4.1. Cài đặt môi trường ảo (Virtual Environment)
+### 3.1. Thiết lập môi trường Python
 Yêu cầu Python $\ge 3.10$ (khuyến nghị Python 3.11):
 ```powershell
 # Tạo môi trường ảo
@@ -99,130 +54,80 @@ python -m venv .venv
 source .venv/bin/activate
 
 # Cài đặt các thư viện cần thiết
-pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 4.2. Mở và chạy Notebook trung tâm
-Tệp notebook trung tâm được thiết kế theo cấu trúc 13 phần chuẩn mực:
+### 3.2. Chuẩn bị dữ liệu (Data Setup)
+- **Bảo mật & Bản quyền**: Theo quy tắc bảo vệ dữ liệu cá nhân (PII) và tôn trọng bản quyền của bên thứ ba, tệp CSV dữ liệu thật không được commit lên GitHub công khai. Chi tiết xem tại [`data/DATA_README.md`](data/DATA_README.md).
+- **Chạy với dữ liệu thật**: Đặt tệp `car_detail.csv` vào `data/raw/external/mquaan_car_price/car_detail.csv` và kiểm tra mã SHA-256 từ [`data/dataset_manifest.json`](data/dataset_manifest.json).
+- **Chế độ tự động Fallback (`SYNTHETIC_DEMO`)**: Nếu chưa có dữ liệu thật cục bộ, notebook sẽ tự động chuyển sang chế độ sinh dữ liệu mô phỏng đại diện. Người chấm có thể chạy lệnh `Run All` mà không gặp bất kỳ lỗi thiếu file nào.
+
+### 3.3. Chạy Notebook
+Khởi động Jupyter Notebook và mở tệp chính:
 ```powershell
 jupyter notebook notebooks/used_car_price_prediction.ipynb
 ```
-*Notebook được thiết kế độc lập, sử dụng đường dẫn tương đối, tự động nhận diện dữ liệu cục bộ hoặc dữ liệu demo mà không bị lỗi crash.*
 
 ---
 
-## 5. Hướng Dẫn Thiết Lập Dữ Liệu Cục Bộ (Local Dataset Setup)
+## 4. Cấu Trúc Nội Dung Notebook Trung Tâm
 
-Nếu bạn có tệp dữ liệu thô gốc, vui lòng đặt vào đúng đường dẫn sau:
-```text
-data/raw/external/mquaan_car_price/car_detail.csv
-data/raw/external/mquaan_car_price/car_sell_processed.csv
-```
-Sau đó, chạy các lệnh tạo dữ liệu tự động:
-```powershell
-# 1. Làm sạch và tạo Cohort A (23,510 dòng)
-python src/data/cleaning.py
+Notebook [`notebooks/used_car_price_prediction.ipynb`](notebooks/used_car_price_prediction.ipynb) được xây dựng tự chứa 100% (không phụ thuộc module ngoài), bao gồm đầy đủ 13 phần:
 
-# 2. Tạo các tập chia 80/10/10 Phase 6
-python src/data/split_data.py
-
-# 3. Tạo các tập chia nhóm Phase 6.2 (0% rò rỉ tin trùng)
-python src/data/duplicate_groups.py
-```
-*(Nếu không có dữ liệu thật, hệ thống sẽ sử dụng `data/synthetic_demo_data.csv` để chạy kiểm thử luồng code).*
+1. **Project Overview**: Đặt vấn đề bất cân xứng thông tin, phân biệt Asking Price vs Transaction Price, xác định Cohort A (xe sản xuất 2015 – 2023).
+2. **Environment & Data Ingestion**: Nhận diện đường dẫn tương đối, kiểm tra thư viện, tự động nạp dữ liệu thật hoặc kích hoạt fallback mô phỏng.
+3. **Exploratory Data Analysis (EDA)**: Thống kê mô tả biến mục tiêu, phân tích độ lệch (Skewness thô $+7.8$ vs log $+0.5$), biểu đồ giá và khám phá xe showroom ODO $0\text{ km}$.
+4. **Data Cleaning & Cohort A**: Bóc tách regex giá tiếng Việt, lọc hộp số dị biệt, xử lý ODO ngoại lai, bóc tách 23,510 bản ghi Cohort A sạch.
+5. **Feature Engineering & Leakage Isolation**: Xây dựng 15 đặc trưng chính quy (8 số, 7 danh mục), loại bỏ tuyệt đối 9 cột rò rỉ dữ liệu khỏi ma trận $X$.
+6. **Train / Validation / Test Splits**: Phân chia 80 / 10 / 10 có phân tầng deciles, đảm bảo $100\%$ không trùng lặp `listing_id`, nguyên tắc chỉ `fit` preprocessor trên Train.
+7. **Preprocessing Pipelines**: Xây dựng `ColumnTransformer` cho mô hình Cây và mô hình Tuyến tính (`OneHotEncoder`, `SimpleImputer`, `StandardScaler`).
+8. **Baseline & Model Training**: Huấn luyện và khảo sát 10 cấu hình thực nghiệm từ Baseline, Tuyến tính (Ridge/Lasso) đến Cây quyết định (HistGBM, Random Forest).
+9. **Validation Leaderboard & Test Evaluation**: So sánh trên tập Val, chọn Champion Model `Tree_RandomForest_Tuned_LogTarget`, đánh giá độc lập một lần trên Test.
+10. **Champion Model & Inference**: Đóng gói quy trình suy luận, dự đoán thử nghiệm trên 3 xe thực tế (Toyota Vios, Mazda CX-5, Mercedes C200).
+11. **Group-Aware Robustness Evaluation (Phase 6.2)**: Phát hiện rò rỉ đăng chéo tin ($9.15\%$ tin trùng), gom cụm và phân chia `StratifiedGroupKFold`, chứng minh **MdAPE giữ vững chuẩn xác 4.29% khi rò rỉ về 0.00%**.
+12. **Feature Importance & Domain Validation**: Phân tích độ giảm phương sai (MDI), giải mã vai trò của `is_luxury_brand` ($43.1\%$) và dung tích xi-lanh ($26.4\%$) gắn liền Biểu thuế Tiêu thụ Đặc biệt (TTĐB).
+13. **Conclusion & Future Roadmap**: Tổng kết thành tựu, thảo luận giới hạn đề tài và lộ trình phát triển mô hình đa phương thức (PhoBERT + Computer Vision).
 
 ---
 
-## 6. Chạy Kiểm Thử Tự Động (Run Tests)
+## 5. Kết Quả Thực Nghiệm & So Sánh Mô Hình (Model Comparison)
 
-Dự án có **87 unit tests** bao phủ 100% các thành phần logic:
-```powershell
-pytest -v --tb=short
-```
-*Kết quả kiểm thử: **87 passed trong ~4.21 giây**, thực thi hoàn toàn offline.*
+Tất cả kết quả thực nghiệm được tổng hợp chuẩn xác tại [`reports/model_comparison.csv`](reports/model_comparison.csv):
 
----
+### 5.1. Bảng xếp hạng Validation (Phase 6 — Random Split, 2,351 dòng Val)
 
-## 7. Hướng Dẫn Suy Luận Dự Đoán Giá Xe (Model Inference)
+| Hạng | Tên cấu hình mô hình | Không gian Target | Val MAE (VND) | Val RMSE (VND) | Val $R^2$ | Val MdAPE (%) |
+| :---: | :--- | :---: | :---: | :---: | :---: | :---: |
+| 🥇 **1** | **`Tree_RandomForest_Tuned_LogTarget` (CHAMPION)** | **log** | **142,934,537** | **950,065,306** | **0.8694** | **4.25%** |
+| 🥈 2 | `Tree_RandomForest_LogTarget` (Default) | log | 159,102,971 | 1,043,403,506 | 0.8425 | 4.94% |
+| 🥉 3 | `Tree_RandomForest_RawTarget` | raw | 168,751,598 | 852,439,763 | 0.8949 | 6.61% |
+| 4 | `Tree_HistGBM_LogTarget` | log | 180,831,847 | 1,208,263,095 | 0.7888 | 5.37% |
+| 5 | `Tree_HistGBM_RawTarget` | raw | 201,925,471 | 1,051,262,546 | 0.8401 | 7.84% |
+| 6 | `Linear_Ridge_LogTarget` | log | 255,658,033 | 1,441,060,500 | 0.6996 | 7.72% |
+| 7 | `Linear_Lasso_LogTarget` | log | 370,691,840 | 1,772,436,353 | 0.5455 | 12.22% |
+| 8 | `Linear_Ridge_RawTarget` | raw | 379,429,332 | 1,153,551,727 | 0.8075 | 23.72% |
+| 9 | `Baseline_Dummy_Median` | raw | 914,616,759 | 2,721,373,088 | -0.0714 | 39.83% |
+| 10 | `Baseline_Dummy_Mean` | raw | 1,164,209,470 | 2,629,312,836 | -0.0001 | 94.34% |
 
-Artifact mô hình vô địch [`models/champion_random_forest.joblib`](models/champion_random_forest.joblib) đã được lưu sẵn trong repository. Bạn có thể thực hiện dự đoán ngay lập tức:
+### 5.2. Đánh giá một lần trên tập Test (Phase 6 Random Test vs Phase 6.2 Group-Aware Test)
 
-### 7.1. Chạy Demo trên các mẫu xe đại diện
-```powershell
-python src/models/predict.py --demo
-```
-*Kết quả mẫu:*
-- **Toyota Vios 2020** (45,000 km, 1.5L AT) $\rightarrow$ **~449 Triệu VNĐ**
-- **Mazda CX-5 2022** (20,000 km, 2.0L AT) $\rightarrow$ **~614 Triệu VNĐ**
-- **Mercedes-Benz C200 2021** (35,000 km, 1.5L AT) $\rightarrow$ **~1 Tỷ 732 Triệu VNĐ**
+| Tập kiểm thử | Tên mô hình | Rò rỉ tin trùng | Test MAE (VND) | Test RMSE (VND) | Test $R^2$ | Test MdAPE (%) |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: |
+| **Phase 6 Random Test** (2,351 xe) | `Tree_RandomForest_Tuned_LogTarget` | $9.15\%$ | **111,793,581** | **482,625,123** | **0.9448** | **4.29%** |
+| **Phase 6.2 Group-Aware Test** (2,350 xe) | `Tree_RandomForest_Tuned_LogTarget` | **0.00%** | **130,761,443** | **821,395,226** | **0.8638** | **4.29%** |
 
-### 7.2. Dự đoán xe bất kỳ qua dòng lệnh
-```powershell
-python src/models/predict.py --brand "Toyota" --model "Vios" --year 2020 --mileage 45000 --transmission "Tự động" --fuel "Xăng" --origin "Trong nước" --engine 1.5 --seats 5
-```
-
----
-
-## 8. Kết Quả Thực Nghiệm Cốt Lõi (Experimental Results)
-
-### 8.1. Bảng xếp hạng 10 cấu hình trên tập Validation (Phase 6 Leaderboard)
-
-| Hạng | Tên thí nghiệm | Target | Val MAE (VND) | Val $R^2$ | Val MdAPE (%) |
-| :---: | :--- | :---: | :---: | :---: | :---: |
-| 🥇 **1** | **`Tree_RandomForest_Tuned_LogTarget` (CHAMPION)** | **log** | **142,934,537** | **0.8694** | **4.25%** |
-| 🥈 2 | `Tree_RandomForest_LogTarget` (Default 100 cây) | log | 159,102,971 | 0.8425 | 4.94% |
-| 🥉 3 | `Tree_RandomForest_RawTarget` | raw | 168,751,598 | 0.8949 | 6.61% |
-| 4 | `Tree_HistGBM_LogTarget` | log | 180,831,847 | 0.7888 | 5.37% |
-| 5 | `Tree_HistGBM_RawTarget` | raw | 201,925,471 | 0.8401 | 7.84% |
-| 6 | `Linear_Ridge_LogTarget` | log | 255,658,033 | 0.6996 | 7.72% |
-| 7 | `Linear_Lasso_LogTarget` | log | 370,691,840 | 0.5455 | 12.22% |
-| 8 | `Linear_Ridge_RawTarget` | raw | 379,429,332 | 0.8075 | 23.72% |
-| 9 | `Baseline_Dummy_Median` | raw | 914,616,759 | -0.0714 | 39.83% |
-| 10 | `Baseline_Dummy_Mean` | raw | 1,164,209,470 | -0.0001 | 94.34% |
-
-### 8.2. Đối chiếu khoa học: Phase 6 (Random Test) vs Phase 6.2 (Group-Aware Test)
-
-Cần phân định rạch ròi hai phép đánh giá độc lập:
-
-| Tiêu chuẩn đo lường | Phase 6 (Random Test - 2,351 xe) | Phase 6.2 (Group-Aware Test - 2,350 xe) | Chênh lệch thực tế | Ý nghĩa khoa học |
-| :--- | :---: | :---: | :---: | :--- |
-| **Rò rỉ bài đăng trùng lặp** | 9.15% (215 xe) | **0.00% (0 xe)** | **-9.15% (Triệt tiêu)** | Đã cách ly hoàn toàn tin trùng |
-| **Test MdAPE** | **4.29%** | **4.29%** | **0.00% (Trùng khớp)** | **Độ chính xác tương đối không hề suy giảm!** |
-| **Test MAE** | **111,793,581 VND** | **130,761,443 VND** | +18,967,862 VND | Phản ánh độ phân tán xe siêu sang |
-| **Test RMSE** | **482,625,123 VND** | **821,395,226 VND** | +338,770,103 VND | Nhạy cảm với đuôi ngoại lai |
-| **Test $R^2$** | **0.9448** | **0.8638** | -0.0810 | Duy trì mức giải thích phương sai rất cao |
-
-> **Khám phá bản chất sự chênh lệch MAE (+18.9M VND)**:
-> - Không phải do mô hình bị overfitting hay suy giảm chất lượng định giá.
-> - Ở phân khúc xe phổ thông ($\le 500\text{M VND}$, chiếm phần lớn thị trường), MAE của Phase 6.2 thậm chí còn **thấp hơn** Phase 6: **24.2 triệu VND** (so với 26.1M). Nhóm xe 500M–1B giữ nguyên mức **40.5 triệu VND**.
-> - Mức tăng của MAE toàn tập xuất phát từ việc tập Test mới ngẫu nhiên có thêm **27 xe siêu sang $> 5\text{ tỷ VND}$** (117 xe so với 90 xe). Riêng 27 xe này đã làm tăng trung bình MAE thêm **+14.5 triệu VND**!
-> - Việc chỉ số **MdAPE giữ vững chính xác ở mức 4.29%** chứng minh mô hình có độ bền khoa học tuyệt đối.
+> **Phát hiện kiểm định then chốt**:
+> - Khi triệt tiêu $100\%$ rò rỉ bài đăng trùng lặp bằng `StratifiedGroupKFold`, chỉ số **MdAPE của mô hình giữ vững tuyệt đối ở mức 4.29%**.
+> - Ở phân khúc xe phổ thông ($\le 500\text{ triệu VND}$), MAE của tập Group-Aware thậm chí còn tốt hơn Phase 6 (**24.2 triệu VND** so với 26.1 triệu VND). Mức tăng MAE toàn cục ($+18.9\text{ triệu VND}$) hoàn toàn bắt nguồn từ việc tập Test Group-Aware ngẫu nhiên nhận thêm 27 xe siêu sang $> 5\text{ tỷ VND}$.
+> - Điều này chứng minh mô hình định giá dựa trên mối tương quan đặc trưng thực chất, hoàn toàn không bị overfit hay ghi nhớ tin trùng lặp.
 
 ---
 
-## 9. Tầm Quan Trọng Của Đặc Trưng & Nghiệp Vụ Thuế Xe
+## 6. Giới Hạn Đề Tài & Hướng Phát Triển (Limitations & Roadmap)
 
-Phân tích Mean Decrease in Impurity (MDI / Variance Reduction) từ Random Forest:
-1. **`is_luxury_brand` (43.10% MDI)**: Xác lập trần giá phân khúc xe sang.
-2. **`engine_displacement_l` (26.35% MDI)**: Gắn chặt chẽ với **Biểu thuế Tiêu thụ Đặc biệt (TTĐB)** tại Việt Nam (áp thuế suất lũy tiến từ 35% đến 150% đối với dung tích xi-lanh lớn).
-3. `brand` (5.72%), `model` (5.63%), `car_age` (4.41%), `year` (3.52%), `transmission` (2.38%), `seats` (2.31%), `fuel_type` (2.12%), `body_type` (1.87%), `origin` (1.48%), `mileage_km` (0.69%).
-
-*Lưu ý nghiệp vụ về ODO*: Biến `mileage_km` có tỷ trọng toàn cục thấp vì khoảng giá thương hiệu (tới 40 tỷ) áp đảo ODO. Tuy nhiên ở cấp độ cục bộ (cùng một dòng xe, cùng năm sản xuất), ODO là nhân tố chính quyết định mức chênh lệch giá 30 – 50 triệu VND.
-
----
-
-## 10. Giới Hạn Đề Tài & Định Hướng Tương Lai (Limitations & Future Work)
-
-### 10.1. Giới hạn học thuật
-- **Asking Price vs Transaction Price**: Dữ liệu phản ánh giá chào bán; giá giao dịch thực tế thấp hơn 2%–5% sau mặc cả.
-- **Thiếu số khung VIN**: Do các sàn xe tại Việt Nam không công khai VIN, không thể khẳng định 100% hai salon khác nhau có đang rao cùng một chiếc xe vật lý ngoài đời hay không.
-- **Mặt cắt ngang tĩnh**: Dữ liệu là lát cắt năm 2023, chưa phản ánh biến động giảm lệ phí trước bạ theo chu kỳ chính sách.
-
-### 10.2. Định hướng tiếp theo
-- Thử nghiệm các mô hình Gradient Boosting chuyên dụng: CatBoost, LightGBM, XGBoost.
-- Ứng dụng NLP (PhoBERT) để trích xuất option từ trường mô tả tin đăng và Computer Vision để phân tích hình ảnh xe.
-- Đóng gói container Docker và triển khai REST API với FastAPI cùng giao diện tra cứu Streamlit.
-
----
-*Dự án hoàn thành đầy đủ, đạt chuẩn xuất sắc và sẵn sàng cho buổi bảo vệ kết thúc khóa đào tạo AI Club.*
+1. **Giá niêm yết vs Giá giao dịch**: Dữ liệu phản ánh giá chào bán công khai (Asking Price). Trong giao dịch thực tế, người mua có thể thương lượng giảm thêm $2\% - 5\%$.
+2. **Thiếu số khung định danh (VIN)**: Các trang tin rao bán xe không hiển thị số VIN để bảo mật, do đó việc gom nhóm dựa trên thông số kỹ thuật và văn bản mô tả.
+3. **Mở rộng mô hình đa phương thức (Multimodal Learning)**:
+   - Tích hợp mô hình NLP (PhoBERT) trích xuất trang bị phụ kiện và lịch sử bảo dưỡng trong phần `Mô tả`.
+   - Kết hợp Computer Vision đánh giá độ mới nội ngoại thất từ ảnh chụp thực tế của xe.
+   - Triển khai REST API với FastAPI và đóng gói Docker container phục vụ triển khai sản xuất.
